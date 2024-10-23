@@ -22,4 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include("bio_app.urls")),
     path('admin_site/', include("admin_plaform.urls")),
+    path('accounts/', include('django.contrib.auth.urls')),  # URLs de autenticación de Django
 ]

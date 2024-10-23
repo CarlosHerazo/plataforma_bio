@@ -10,4 +10,4 @@ def es_admin(user):
 
 @user_passes_test(es_admin)
 def index_admin(request):
-    return HttpRequest("Admin")
+    return render(request,"admin/index.html")  
