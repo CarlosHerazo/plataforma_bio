@@ -32,3 +32,6 @@ def usuarios(request):
     usuarios = User.objects.all()
     context = {'usuarios': usuarios, 'form': form}
     return render(request, 'admin/usuarios.html', context)
+
+def maps_views(request):
+    return render(request, 'admin/maps-google.html')
