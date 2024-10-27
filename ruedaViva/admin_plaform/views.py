@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
-from .forms import UsuarioForm
+from .models import DetailsUser
+from .forms import UsuarioForm, DetailsUserForm
 from django.http import HttpRequest
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -19,18 +20,30 @@ def index_admin(request):
 @user_passes_test(es_admin)
 def usuarios(request):
     if request.method == "POST":
-        form = UsuarioForm(request.POST)
-        if form.is_valid():
-            form.save()
+        user_form = UsuarioForm(request.POST)
+        details_form = DetailsUserForm(request.POST, request.FILES)  # Asegúrate de manejar archivos
+
+        if user_form.is_valid() and details_form.is_valid():
+            user = user_form.save()
+            details = details_form.save(commit=False)  # No guardar aún
+            details.user = user  # Relacionar con el usuario
+            details.save()  # Guardar detalles
             messages.success(request, 'Usuario agregado exitosamente!')
             return redirect('usuarios_admin')
         else:
             messages.error(request, 'Por favor corrige los errores en el formulario.')
     else:
-        form = UsuarioForm()
+        user_form = UsuarioForm()
+        details_form = DetailsUserForm()
 
-    usuarios = User.objects.all()
-    context = {'usuarios': usuarios, 'form': form}
+    usuarios = DetailsUser.objects.all()
+    context = {
+        'usuarios': usuarios,
+        'user_form': user_form,
+        'details_form': details_form,
+    }
+    
+    print(usuarios)
     return render(request, 'admin/usuarios.html', context)
 
 def maps_views(request):

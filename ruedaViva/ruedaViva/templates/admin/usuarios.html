@@ -1,119 +1,114 @@
 {% extends 'base/base.html' %}
 
-
 {% block head %}
-{% load static %}
-<!-- Estilos de DataTables -->
-<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+  {% load static %}
+  <!-- Estilos de DataTables -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" />
 
-<!-- jQuery y DataTables -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-<link href="{% static 'css/table.css' %}" rel="stylesheet">
-{% load crispy_forms_tags %}
+  <!-- jQuery y DataTables -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+  <link href="{% static 'css/table.css' %}" rel="stylesheet" />
+  {% load crispy_forms_tags %}
 {% endblock %}
 
 {% block content %}
-
-<div class="container-fluid p-0">
+  <div class="container-fluid p-0">
     <h1 class="h3 mb-3"><strong>Usuarios</strong> Registrados</h1>
     <!-- Botón para abrir el modal -->
-    <button type="button" class="btn btn-outline-dark mb-2" data-bs-toggle="modal"
-        data-bs-target="#agregarUsuarioModal">
-        Agregar usuario <i class="align-middle" data-feather="user"></i>
-    </button>
+    <button type="button" class="btn btn-outline-dark mb-2" data-bs-toggle="modal" data-bs-target="#agregarUsuarioModal">Agregar usuario <i class="align-middle" data-feather="user"></i></button>
 
     <!-- Modal para agregar usuario -->
     <!-- Modal -->
-    <div class="modal fade" id="agregarUsuarioModal" tabindex="-1" aria-labelledby="agregarUsuarioModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header bg-dark text-white">
-                    <h5 class="modal-title" id="agregarUsuarioModalLabel">Agregar nuevo usuario</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- Usamos el formulario de Django -->
-                    <form id="agregarUsuarioForm" method="POST">
-                        {% csrf_token %}
-                        {{ form|crispy }} <!-- Renderiza todos los campos del formulario de Django -->
-
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-success" form="agregarUsuarioForm"
-                        id="confirmarAgregarUsuario">Guardar usuario</button>
-                </div>
-            </div>
+    <div class="modal fade" id="agregarUsuarioModal" tabindex="-1" aria-labelledby="agregarUsuarioModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header bg-dark text-white">
+            <h5 class="modal-title text-white font-weight-bold" id="agregarUsuarioModalLabel">Agregar nuevo usuario</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <!-- Usamos el formulario de Django -->
+            <form id="agregarUsuarioForm" method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="row">
+                <div class="col">{{ user_form|crispy }}</div>
+                <div class="col">{{ details_form|crispy }}</div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-success" form="agregarUsuarioForm" id="confirmarAgregarUsuario">Guardar usuario</button>
+          </div>
         </div>
+      </div>
     </div>
-
-
-
 
     <div class="table-container">
-        <!-- Alert para mostrar errores -->
-        <!-- Alert para mostrar errores -->
-        {% if messages %}
-    {% for message in messages %}
-        {% if "error" in message.tags %}
+      <!-- Alert para mostrar errores -->
+      {% if messages %}
+        {% for message in messages %}
+          {% if 'error' in message.tags %}
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-        {% else %}
+          {% else %}
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-        {% endif %}
-    {% endfor %}
-{% endif %}
-
-        <table id="usuariosTable">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th>Nombre Completo</th>
-                    <th>Fecha de Creación</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for usuario in usuarios %}
-                <tr>
-                    <td>{{ usuario.id }}</td>
-                    <td>{{ usuario.username }}</td>
-                    <td>{{ usuario.email }}</td>
-                    <td>{{ usuario.first_name }} {{ usuario.last_name }}</td>
-                    <td>{{ usuario.date_joined }}</td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="5" class="text-center">No hay usuarios registrados</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+      <table id="#usuariosTable" class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Nombre Completo</th>
+            <th>Fecha de Creación</th>
+            <th>Foto de perfil</th>
+          </tr>
+        </thead>
+        <tbody>
+        
+          {% for usuario in usuarios %}
+            <tr>
+              {{ usuario.foto_perfil.url }}
+              <td>{{ usuario.user.id }}</td>
+              <td>{{ usuario.user.username }}</td>
+              <td>{{ usuario.user.email }}</td>
+              <td>{{ usuario.user.first_name }} {{ usuario.user.last_name }}</td>
+              <td>{{ usuario.user.date_joined }}</td>
+              <td><img src="" alt="{{ usuario.user.first_name }}"><td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="5" class="text-center">No hay usuarios registrados</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
-</div>
+  </div>
 
-<!-- Script para inicializar DataTables -->
-<script>
+  <script>
     $(document).ready(function () {
-        $('#usuariosTable').DataTable({
-            "language": {
-                "url": "//cdn.datatables.net/plug-ins/1.11.5/i18n/Spanish.json"
-            },
-            "pageLength": 10,  // Número de registros por página
-            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
-        });
-    });
-</script>
-<script src="{% static 'js/user.js' %}" type="module"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+      $('#usuariosTable').DataTable({ 
+        language: {
+          url: '//cdn.datatables.net/plug-ins/1.11.5/i18n/Spanish.json'
+        },
+        pageLength: 10, // Número de registros por página
+        lengthMenu: [
+          [10, 25, 50, -1],
+          [10, 25, 50, 'Todos']
+        ]
+      })
+    })
+  </script>
+  <script src="{% static 'js/user.js' %}" type="module"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 {% endblock %}
