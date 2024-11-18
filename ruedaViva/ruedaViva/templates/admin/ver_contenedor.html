@@ -1,0 +1,30 @@
+{% extends 'base/base.html' %}
+
+{% block head %}
+  {% load static %}
+  <!-- Estilos de DataTables -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" />
+
+  <!-- jQuery y DataTables -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+  <link href="{% static 'css/table.css' %}" rel="stylesheet" />
+  {% load crispy_forms_tags %}
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid p-4">
+    <div class="container-fluid p-4">
+        <h1>Detalles del Contenedor</h1>
+        <p><strong>ID:</strong> {{ contenedor.id }}</p>
+        <p><strong>Usuario:</strong> {{ contenedor.user.username }}</p>
+        <p><strong>Localización:</strong> {{ contenedor.location }}</p>
+        <p><strong>Geo Latitud:</strong> {{ contenedor.geo_latitude }}</p>
+        <p><strong>Geo Longitud:</strong> {{ contenedor.geo_longitude }}</p>
+        <p><strong>Estado:</strong> {{ contenedor.status }}</p>
+        <a href="{% url 'contenedores_admin' %}" class="btn btn-secondary">Atrás</a>
+    </div>
+</div>
+
+{% endblock %}

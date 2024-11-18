@@ -1,0 +1,65 @@
+{% extends 'base/base.html' %}
+
+{% block head %}
+  {% load static %}
+  <!-- Estilos de DataTables -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" />
+
+  <!-- jQuery y DataTables -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+  <link href="{% static 'css/table.css' %}" rel="stylesheet" />
+  {% load crispy_forms_tags %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Datos Recolectados para: {{ container.location }}</h2>
+    
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Cantidad a llenar</th>
+          <th>Cantidad actual</th>
+          <th>Alertas</th>
+          <th>Status</th>
+          <th>Fecha de creación</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for data in tire_data %}
+          <tr>
+            <td>{{ data.quantity_to_fill }}</td>
+            <td>{{ data.current_quantity }}</td>
+            <td>{{ data.alerts }}</td>
+            <td>{{ data.status }}</td>
+            <td>{{ data.created_at }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    
+    <a href="{% url 'recoleccion_admin' %}" class="btn btn-secondary">Volver</a>
+<!-- jQuery (necesario para DataTables) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      $('#usuariosTable').DataTable({ 
+        language: {
+          url: '//cdn.datatables.net/plug-ins/1.11.5/i18n/Spanish.json'
+        },
+        pageLength: 10, // Número de registros por página
+        lengthMenu: [
+          [10, 25, 50, -1],
+          [10, 25, 50, 'Todos']
+        ]
+      })
+    })
+  </script>
+  <script src="{% static 'js/user.js' %}" type="module"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{% endblock %}

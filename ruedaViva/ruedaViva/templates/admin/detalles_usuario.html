@@ -1,0 +1,41 @@
+{% extends 'base/base.html' %}
+
+{% block head %}
+  {% load static %}
+  <!-- Estilos de DataTables -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" />
+
+  <!-- jQuery y DataTables -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+  <link href="{% static 'css/table.css' %}" rel="stylesheet" />
+  {% load crispy_forms_tags %}
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid p-4">
+  <div class="card shadow-sm">
+      <div class="card-header">
+          <h1 class="h3 mb-0"><strong>Detalles</strong> del Usuario</h1>
+      </div>
+      <div class="card-body">
+          <div class="row">
+              <div class="col-md-6">
+                  <p><strong>Nombre:</strong> {{ usuario.user.first_name }} {{ usuario.user.last_name }}</p>
+                  <p><strong>Email:</strong> {{ usuario.user.email }}</p>
+                  <p><strong>Fecha de Creación:</strong> {{ usuario.user.date_joined }}</p>
+              </div>
+              <div class="col-md-6 text-center">
+                  <p><strong>Foto de Perfil:</strong></p>
+                  <img src="{{ usuario.foto_perfil.url }}" alt="Foto de {{ usuario.user.first_name }}" class="rounded-circle mb-3" width="150" height="150">
+              </div>
+          </div>
+          <div class="text-center">
+              <a href="{% url 'usuarios_admin' %}" class="btn btn-secondary btn-lg">Atrás</a>
+          </div>
+      </div>
+  </div>
+</div>
+
+{% endblock %}

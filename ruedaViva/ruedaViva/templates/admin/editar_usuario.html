@@ -1,0 +1,33 @@
+{% extends 'base/base.html' %}
+
+{% block head %}
+  {% load static %}
+  <!-- Estilos de DataTables -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" />
+
+  <!-- jQuery y DataTables -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+  <link href="{% static 'css/table.css' %}" rel="stylesheet" />
+  {% load crispy_forms_tags %}
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid p-0">
+    <h1 class="h3 mb-3"><strong>Editar</strong> Usuario</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+                <div class="col">{{ user_form|crispy }}</div>
+                <div class="col">{{ details_form|crispy }}</div>
+              </div>
+
+        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+        <a href="{% url 'usuarios_admin' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+    
+    
+</div>
+{% endblock %}

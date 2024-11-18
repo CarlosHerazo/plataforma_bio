@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
+from .models import Container, TireData
 from django.contrib.auth.hashers import make_password
 from .models import DetailsUser
 
@@ -22,3 +23,14 @@ class DetailsUserForm(forms.ModelForm):
     class Meta:
         model = DetailsUser
         fields = ['foto_perfil', 'nombre_centro', 'direccion', 'telefono']
+
+class ContainerForm(forms.ModelForm):
+    class Meta:
+        model = Container
+        fields = ['user', 'location', 'geo_latitude', 'geo_longitude', 'status']
+
+class TireDataForm(forms.ModelForm):
+    class Meta:
+        model = TireData
+        fields = ['quantity_to_fill']
+

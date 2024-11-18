@@ -1,0 +1,39 @@
+{% extends 'base/base.html' %}
+
+{% block head %}
+{% load static %}
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid p-0">
+    <h1 class="h3 mb-3"><strong>Mapa de Contenedores</strong></h1>
+    <div id="map" style="height: 500px;"></div>  <!-- Div donde se mostrará el mapa -->
+</div>
+
+<script>
+    // Inicializar el mapa centrado en Cartagena (coordenadas de ejemplo)
+    var map = L.map('map').setView([10.3910, -75.4792], 13);  // Coordenadas de Cartagena
+
+    // Capa de OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // Agregar marcadores para cada contenedor
+    {% for container in containers %}
+        var lat = {{ container.geo_latitude }};
+        var lon = {{ container.geo_longitude }};
+
+        // Crear un marcador en las coordenadas de cada contenedor
+        var marker = L.marker([lat, lon]).addTo(map);
+
+        // Agregar un popup con la ubicación del contenedor
+        marker.bindPopup("<b>Contenedor: {{ container.location }} </b>" + "<br><b>Estado: </b>{{ container.status }}");
+    {% endfor %}
+</script>
+
+{% endblock %}

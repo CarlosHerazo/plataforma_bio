@@ -14,32 +14,33 @@
 
 {% block content %}
   <div class="container-fluid p-0">
-    <h1 class="h3 mb-3"><strong>Usuarios</strong> Registrados</h1>
+    <h1 class="h3 mb-3"><strong>Contenedores</strong> Registrados</h1>
     <!-- Botón para abrir el modal -->
-    <button type="button" class="btn btn-outline-dark mb-2" data-bs-toggle="modal" data-bs-target="#agregarUsuarioModal">Agregar usuario <i class="align-middle" data-feather="user"></i></button>
+    <button type="button" class="btn btn-outline-dark mb-2" data-bs-toggle="modal" data-bs-target="#agregarContenedorModal">Agregar contenedor <i class="align-middle" data-feather="package"></i></button>
 
     <!-- Modal para agregar usuario -->
     <!-- Modal -->
-    <div class="modal fade" id="agregarUsuarioModal" tabindex="-1" aria-labelledby="agregarUsuarioModalLabel" aria-hidden="true">
+    <div class="modal fade" id="agregarContenedorModal" tabindex="-1" aria-labelledby="agregarContenedorModal" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header bg-dark text-white">
-            <h5 class="modal-title text-white font-weight-bold" id="agregarUsuarioModalLabel">Agregar nuevo usuario</h5>
+            <h5 class="modal-title text-white font-weight-bold" id="agregarContenedorModal">Agregar nuevo contenedor</h5>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
             <!-- Usamos el formulario de Django -->
-            <form id="agregarUsuarioForm" method="POST" enctype="multipart/form-data">
-              {% csrf_token %}
-              <div class="row">
-                <div class="col">{{ user_form|crispy }}</div>
-                <div class="col">{{ details_form|crispy }}</div>
-              </div>
+            <form id="AgregarContenedorForm" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row">
+                  <div class="col">{{ form_containers|crispy }}</div>
+                  <div class="col">{{ form_data|crispy }}</div>
+                </div>
             </form>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-            <button type="submit" class="btn btn-success" form="agregarUsuarioForm" id="confirmarAgregarUsuario">Guardar usuario</button>
+            <button type="button" class="btn btn-success" id="confirmarAgregarContenedor">Guardar contenedor</button>
+
           </div>
         </div>
       </div>
@@ -66,35 +67,38 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Username</th>
-                <th>Email</th>
-                <th>Nombre Completo</th>
-                <th>Fecha de Creación</th>
-                <th>Foto de perfil</th>
-                <th>Acciones</th> <!-- Cambio aquí: "accioines" a "Acciones" -->
+                <th>Usuario</th>
+                <th>Localización</th>
+                <th>Geo Latitud</th>
+                <th>Geo Longitud</th>
+                <th>Estado</th>
+                <th>Acciones</th> <!-- Columna de acciones -->
             </tr>
         </thead>
         <tbody>
-            {% for usuario in usuarios %}
+            {% for contenedor in contenedores %}
             <tr>
-                <td>{{ usuario.user.id }}</td>
-                <td>{{ usuario.user.username }}</td>
-                <td>{{ usuario.user.email }}</td>
-                <td>{{ usuario.user.first_name }} {{ usuario.user.last_name }}</td>
-                <td>{{ usuario.user.date_joined }}</td>
+                <td>{{ contenedor.id }}</td>
+                <td>{{ contenedor.user.username }}</td>
+                <td>{{ contenedor.location }}</td>
+                <td>{{ contenedor.geo_latitude }}</td>
+                <td>{{ contenedor.geo_longitude }}</td>
+                
+                {% if contenedor.status == 'vacio' %}
+                    <td><p class="bg-success text-white p-2 rounded-3 text-center shadow-sm">{{ contenedor.status }}</p></td>
+                {% else %}
+                    <td><p class="bg-danger text-white p-2 rounded-3 text-center shadow-sm">{{ contenedor.status }}</p></td>
+                {% endif %}
+    
                 <td>
-                    <img src="{{ usuario.foto_perfil.url }}" alt="{{ usuario.user.first_name }}" class="rounded-circle" width="50" height="50">
-                </td>
-                <td>
-                    <!-- Acciones: -->
-                    <a href="{% url 'usuario_editar' usuario.user.id %}" class="btn btn-sm btn-primary">Editar</a>
-                    <a href="{% url 'usuario_detalles' usuario.user.id %}" class="btn btn-sm btn-info">Ver</a>
-                    <a href="{% url 'usuario_eliminar' usuario.user.id %}" class="btn btn-sm btn-danger">Eliminar</a>
+                    <!-- Botones de acciones -->
+                    <a href="{% url 'contenedor_ver' contenedor.id %}" class="btn btn-sm btn-info">Ver</a>
+                    <a href="{% url 'contenedor_eliminar' contenedor.id %}" class="btn btn-sm btn-danger">Eliminar</a>
                 </td>
             </tr>
             {% empty %}
             <tr>
-                <td colspan="7" class="text-center">No hay usuarios registrados</td>
+                <td colspan="7" class="text-center">No hay contenedores registrados</td>
             </tr>
             {% endfor %}
         </tbody>
@@ -102,11 +106,6 @@
     
     </div>
   </div>
-<!-- jQuery (necesario para DataTables) -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<!-- DataTables JS -->
-<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 
   <script>
     $(document).ready(function () {
@@ -122,6 +121,6 @@
       })
     })
   </script>
-  <script src="{% static 'js/user.js' %}" type="module"></script>
+  <script src="{% static 'js/container.js' %}" type="module"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 {% endblock %}

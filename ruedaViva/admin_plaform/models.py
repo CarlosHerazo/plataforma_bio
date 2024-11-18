@@ -28,10 +28,10 @@ class Container(models.Model):
 
 class TireData(models.Model):
     container = models.ForeignKey(Container, on_delete=models.CASCADE, related_name='tire_data')
-    quantity_to_fill = models.IntegerField()
-    current_quantity = models.IntegerField()
-    alerts = models.TextField()
-    status = models.CharField(max_length=50)
+    quantity_to_fill = models.IntegerField(null=True)
+    current_quantity = models.IntegerField(null=True)
+    alerts = models.TextField(null=True)
+    status = models.CharField(max_length=50, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
