@@ -21,24 +21,44 @@
         <tr>
           <th>Cantidad a llenar</th>
           <th>Cantidad actual</th>
+          <th>Cantidad ml</th>
           <th>Alertas</th>
           <th>Status</th>
           <th>Fecha de creación</th>
+          <th>Llantas Recogidas</th> <!-- Nueva columna -->
+          <th>Acción</th> <!-- Botón para recoger llantas -->
         </tr>
       </thead>
       <tbody>
         {% for data in tire_data %}
           <tr>
             <td>{{ data.quantity_to_fill }}</td>
+            <td>{{ data.quantity_ml }}</td>
             <td>{{ data.current_quantity }}</td>
             <td>{{ data.alerts }}</td>
             <td>{{ data.status }}</td>
             <td>{{ data.created_at }}</td>
+            <td>
+              {% if data.current_quantity == 0 %}
+                <span class="text-success">Llantas recogidas</span>
+              {% else %}
+                <span class="text-danger">Pendiente</span>
+              {% endif %}
+            </td>
+            <td>
+              {% if data.current_quantity > 0 %}
+                <form method="post" action="{% url 'collect_tires' container.id %}">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-primary">Recoger Llantas</button>
+                </form>
+              {% else %}
+                <button type="button" class="btn btn-secondary" disabled>Llantas Recogidas</button>
+              {% endif %}
+            </td>
           </tr>
         {% endfor %}
       </tbody>
     </table>
-    
     <a href="{% url 'recoleccion_admin' %}" class="btn btn-secondary">Volver</a>
 <!-- jQuery (necesario para DataTables) -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

@@ -140,3 +140,14 @@ STATICFILES_DIRS = [
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# Redirigir después del login
+LOGIN_REDIRECT_URL = '/admin_site/'
+
+# Redirigir después del logout
+LOGOUT_REDIRECT_URL = '/'
+
+# URL para redirigir a los no autenticados (página de login)
+LOGIN_URL = 'login/'
+
+MEDIA_ROOT = BASE_DIR / 'media'  # Asegúrate de que la carpeta media exista
