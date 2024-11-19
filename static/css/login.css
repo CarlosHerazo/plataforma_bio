@@ -17,12 +17,6 @@ body {
     display: flex;
   }
 
-  .login-image {
-    display: none;
-    background: url('/static/img/photos/logo_img.webp') no-repeat center center;
-    background-size: cover;
-  }
-
   .login-form {
     padding: 40px;
     flex: 1;
