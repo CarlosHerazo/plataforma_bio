@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-upm#5%%(fvb7*@x#!c9wbk2rf(*y!0j^@y+6%9a266xt#x7vua'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["plataforma-bio.up.railway.app"]
 
 
 # Application definition
