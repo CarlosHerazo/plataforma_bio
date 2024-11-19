@@ -1,1 +1,1 @@
-web: gunicorn myproject.wsgi:application
+web: gunicorn ruedaViva.wsgi:application
