@@ -19,7 +19,7 @@ body {
 
   .login-image {
     display: none;
-    background: url('{% static "img/photos/logo_img.webp" %}') no-repeat center center;
+    background: url('/static/img/photos/logo_img.webp') no-repeat center center;
     background-size: cover;
   }
 
